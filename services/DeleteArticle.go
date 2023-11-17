@@ -6,7 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func DeleteArticle(id uint64, db *model.DBCollection) (*mongo.DeleteResult, error) {
+func DeleteArticle(id string, db *model.DBCollection) (*mongo.DeleteResult, error) {
 	filter := bson.D{{"_id", id}}
 
 	result, err := db.Collection.DeleteOne(db.Ctx, filter)
