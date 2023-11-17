@@ -11,6 +11,8 @@ import (
 func StartServer(db *model.DBCollection) {
 	router := gin.New()
 
+	gin.SetMode(gin.ReleaseMode)
+
 	err := router.SetTrustedProxies([]string{"127.0.0.1"})
 	if err != nil {
 		log.Printf("Set trusted proxies error: %v\n", err)
