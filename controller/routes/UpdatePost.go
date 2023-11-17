@@ -8,11 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"strconv"
 	"time"
 )
 
 func UpdatePost(c *gin.Context) {
+	isAdmin, err := c.Request.Cookie("isAdmin")
+	if err != nil || isAdmin.Value != "true" {
+		c.JSON(http.StatusForbidden, "Only admin is able to interact with posts!")
+		return
+	}
+
 	collectionInterface, exists := c.Get("collection")
 	if !exists {
 		log.Print("The context of collection is empty!")
@@ -26,12 +31,6 @@ func UpdatePost(c *gin.Context) {
 	}
 
 	idParam := c.Param("id")
-
-	postID, parseErr := strconv.ParseUint(idParam, 10, 64)
-	if parseErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post ID"})
-		return
-	}
 
 	if err := c.Request.ParseMultipartForm(10 << 20); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse the form!"})
@@ -63,7 +62,7 @@ func UpdatePost(c *gin.Context) {
 		UpdatedAt:    uint64(time.Now().UnixNano() / int64(time.Millisecond)),
 	}
 
-	_, updateErr := services.UpdateArticle(postID, updatedArticle, collection)
+	_, updateErr := services.UpdateArticle(idParam, updatedArticle, collection)
 	if updateErr != nil {
 		log.Printf("Update error: %v\n", err)
 		return

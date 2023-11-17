@@ -12,6 +12,12 @@ import (
 )
 
 func CreatePost(c *gin.Context) {
+	isAdmin, err := c.Request.Cookie("isAdmin")
+	if err != nil || isAdmin.Value != "true" {
+		c.JSON(http.StatusForbidden, "Only admin is able to interact with posts!")
+		return
+	}
+
 	collectionInterface, exists := c.Get("collection")
 	if !exists {
 		log.Print("The context of collection is empty!")
@@ -56,6 +62,7 @@ func CreatePost(c *gin.Context) {
 
 	_, err = services.CreateArticle(article, collection)
 	if err != nil {
+		log.Printf("Database saving error: %v\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save the article to the database!"})
 		return
 	}
