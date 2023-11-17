@@ -23,6 +23,7 @@ func StartServer(db *model.DBCollection) {
 	router.GET("/get/:id", routes.FindPostBYId)
 	router.POST("/create", routes.CreatePost)
 	router.PUT("/update/:id", routes.UpdatePost)
+	router.POST("/authorize", routes.CheckIsAdmin)
 
 	if err := router.Run(":8080"); err != nil {
 		log.Printf("Start server error: %v\n", err)
