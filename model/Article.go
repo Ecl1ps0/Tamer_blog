@@ -1,7 +1,6 @@
 package model
 
 type Article struct {
-	ID           uint64 `bson:"_id, omitempty"`
 	Title        string `bson:"title"`
 	TextContent  string `bson:"textContent"`
 	ImageContent string `bson:"imageContent"`

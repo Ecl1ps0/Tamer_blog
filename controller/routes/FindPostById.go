@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 func FindPostBYId(c *gin.Context) {
@@ -24,13 +23,7 @@ func FindPostBYId(c *gin.Context) {
 
 	idParam := c.Param("id")
 
-	postID, parseErr := strconv.ParseUint(idParam, 10, 64)
-	if parseErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post ID"})
-		return
-	}
-
-	post, err := services.FindBYId(postID, collection)
+	post, err := services.FindBYId(idParam, collection)
 	if err != nil {
 		log.Printf("Failed to find the post by id: %v\n", err)
 	}

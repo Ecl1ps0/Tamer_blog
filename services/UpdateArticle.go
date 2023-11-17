@@ -6,7 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func UpdateArticle(id uint64, updatedArticle *model.Article, db *model.DBCollection) (*mongo.UpdateResult, error) {
+func UpdateArticle(id string, updatedArticle *model.Article, db *model.DBCollection) (*mongo.UpdateResult, error) {
 	filter := bson.D{{"_id", id}}
 	update := bson.D{{"$set", bson.D{
 		{"title", updatedArticle.Title},

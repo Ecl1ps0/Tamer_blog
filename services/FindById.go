@@ -5,7 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func FindBYId(id uint64, db *model.DBCollection) (*model.Article, error) {
+func FindBYId(id string, db *model.DBCollection) (*model.Article, error) {
 	filter := bson.D{{"_id", id}}
 
 	var result model.Article
