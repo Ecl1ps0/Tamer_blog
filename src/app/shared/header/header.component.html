@@ -1,0 +1,62 @@
+<header
+  class="w-full bg-white mx-auto container py-5 md:px-16 lg:py-8 px-4 font-inter items-center flex justify-between"
+>
+  <div class="h-full font-bold text-[#1E2834] text-xl md:text-2xl">
+    Тамерлан
+  </div>
+  <!--  -->
+  <div class="hidden md:flex items-center gap-3 md:gap-10">
+    <ul class="flex gap-5">
+      <li>
+        <a
+          class="cursor-pointer hover:underline hover:text-gray-700"
+          [routerLink]="['/']"
+          >Главная</a
+        >
+      </li>
+      <li>
+        <a
+          class="cursor-pointer hover:underline hover:text-gray-700"
+          [routerLink]="['/about']"
+          >Обо мне</a
+        >
+      </li>
+    </ul>
+    <button-shared [primary]="true">Войти</button-shared>
+  </div>
+  <!--  -->
+  <div
+    (click)="handleOpen()"
+    class="w-8 h-5 items-end cursor-pointer md:hidden flex flex-col justify-between"
+  >
+    <div class="w-full h-1 bg-slate-800"></div>
+    <div class="w-full h-1 bg-slate-800"></div>
+    <div class="w-2/3 h-1 bg-slate-800"></div>
+  </div>
+  <!--  -->
+</header>
+<!-- menu -->
+<section
+  class="absolute w-full h-56 flex py-5 items-center justify-center text-center top-[68px] bg-white md:hidden"
+  [class]="isOpen ? 'block' : 'hidden'"
+>
+  <ul class="flex flex-col gap-y-5">
+    <li>
+      <a
+        class="cursor-pointer text-xl font-medium hover:underline hover:text-gray-700"
+        [routerLink]="['/']"
+        >Главная</a
+      >
+    </li>
+    <li>
+      <a
+        class="cursor-pointer text-xl font-medium hover:underline hover:text-gray-700"
+        [routerLink]="['/about']"
+        >Обо мне</a
+      >
+    </li>
+    <li>
+      <button-shared>Войти</button-shared>
+    </li>
+  </ul>
+</section>
