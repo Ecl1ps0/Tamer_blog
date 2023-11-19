@@ -2,15 +2,23 @@ package services
 
 import (
 	"Tamer/model"
+	"errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"log"
 )
 
 func FindBYId(id string, db *model.DBCollection) (*model.Article, error) {
-	filter := bson.D{{"_id", id}}
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Printf("Invalid ObjectID format: %v\n", err)
+		return nil, errors.New("Invalid ObjectID format")
+	}
+
+	filter := bson.D{{"_id", objectID}}
 
 	var result model.Article
-	err := db.Collection.FindOne(db.Ctx, filter).Decode(&result)
-	if err != nil {
+	if err := db.Collection.FindOne(db.Ctx, filter).Decode(&result); err != nil {
 		return nil, err
 	}
 
