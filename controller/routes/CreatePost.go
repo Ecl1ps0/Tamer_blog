@@ -6,6 +6,7 @@ import (
 	"Tamer/services"
 	"encoding/base64"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"net/http"
 	"time"
@@ -53,6 +54,7 @@ func CreatePost(c *gin.Context) {
 	base64Img := base64.StdEncoding.EncodeToString(imageBytes)
 
 	article := model.Article{
+		ID:           primitive.NewObjectID(),
 		Title:        title,
 		TextContent:  textContent,
 		ImageContent: base64Img,
