@@ -4,6 +4,7 @@ import (
 	"Tamer/config"
 	"Tamer/controller/routes"
 	"Tamer/model"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -12,6 +13,15 @@ func StartServer(db *model.DBCollection) {
 	router := gin.New()
 
 	gin.SetMode(gin.ReleaseMode)
+
+	corsConfig := cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
+		AllowCredentials: true,
+	}
+
+	router.Use(cors.New(corsConfig))
 
 	err := router.SetTrustedProxies([]string{"127.0.0.1"})
 	if err != nil {
