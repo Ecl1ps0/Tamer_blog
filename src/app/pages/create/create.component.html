@@ -1,0 +1,46 @@
+<main class="w-full font-inter min-h-screen bg-white">
+  <h1 class="text-center font-medium text-2xl">Добавить пост</h1>
+
+  <section class="w-full mt-5 flex flex-col items-center">
+    <form (submit)="addPost()" [formGroup]="postFormData" class="w-full px-5">
+      <label for="title">Название</label>
+      <input
+        id="title"
+        formControlName="title"
+        class="w-full border rounded-md py-1 px-1.5"
+        type="text"
+      />
+      <div class="w-full my-3">
+        <button-shared [type]="'button'" (click)="fileInput.click()"
+          >Загрузить картинку</button-shared
+        >
+        <input
+          type="file"
+          #fileInput
+          hidden
+          (change)="onFileSelected($event)"
+        />
+        @if(imageArrayBuffer) {
+        <img
+          class="w-full md:rounded-md object-cover"
+          [src]="imageArrayBuffer"
+          alt="image"
+        />
+        }
+      </div>
+
+      <label for="description">Описание</label>
+      <textarea
+        id="description"
+        formControlName="textContent"
+        class="w-full border rounded-md p-1.5 h-44"
+      ></textarea>
+
+      <div class="w-56">
+        <button-shared [type]="'submit'" [primary]="true"
+          >Добавить</button-shared
+        >
+      </div>
+    </form>
+  </section>
+</main>

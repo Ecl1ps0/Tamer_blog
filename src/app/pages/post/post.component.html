@@ -1,0 +1,22 @@
+<section
+  class="w-full bg-gray-100 font-inter h-36 md:h-56 flex-col flex justify-center items-center"
+>
+  <h1
+    class="font-bold mt-10 text-center text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-500 text-4xl md:text-5xl lg:text-7xl"
+  >
+    {{ post().Title }}
+  </h1>
+</section>
+
+<section
+  class="container font-inter h-[220px] md:px-8 mx-auto w-full md:h-[500px]"
+>
+  <img
+    class="w-full md:rounded-md h-full object-cover"
+    [src]="'data:image/png;base64, ' + post().ImageContent"
+    alt=""
+  />
+</section>
+<div class="p-5 bg-white md:p-10">
+  {{ post().TextContent }}
+</div>

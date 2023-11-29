@@ -9,4 +9,6 @@ import { CommonModule } from '@angular/common';
 })
 export class ButtonComponent {
   @Input('primary') primaryButton: boolean = false;
+  @Input('danger') dangerButton: boolean = false;
+  @Input('type') type: string = 'text';
 }

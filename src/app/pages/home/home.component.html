@@ -17,14 +17,12 @@
   </div>
 </section>
 
+<div *ngIf="isLoading" class="w-full flex justify-center">Загрузка...</div>
+
 <div class="lg:px-20">
   <section class="w-full flex flex-col gap-y-5 mx-auto p-3 rounded-md">
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
+    @for (post of posts$ | async; track $index) {
+    <app-card (deletePost)="handleDeletePost($event)" [data]="post"></app-card>
+    }
   </section>
 </div>

@@ -1,25 +1,34 @@
 <div
-  class="w-full font-inter bg-white lg:h-64 rounded-xl md:h-52 h-72 cursor-pointer"
+  (click)="clickCard(data.ID)"
+  class="w-full font-inter hover:transform hover:scale-[1.05] hover:shadow-2xl transition-all bg-white lg:h-64 rounded-xl md:h-52 h-72 cursor-pointer"
 >
   <div class="lg:p-7 py-2 md:p-5 lg:gap-5 md:flex justify-between">
     <div class="flex md:w-2/3 px-1.5 md:p-0 flex-col md:gap-y-8">
-      <div class="font-semibold text-sm text-[#667085]">AUGUST 13,2021</div>
+      <div class="font-semibold text-sm text-[#667085]">
+        {{ date.toUpperCase() }}
+      </div>
       <div class="flex flex-col gap-y-2.5">
-        <div class="font-bold md:text-2xl text-[#1D2939]">XYU SOSI</div>
+        <div class="font-bold md:text-2xl text-[#1D2939]">{{ data.Title }}</div>
         <div class="text-[#475467] text-base md:block hidden">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
-          quidem maxime quia et minima nesciunt a alias debitis assumenda. Enim
-          similique
+          {{ data.TextContent.substring(0, 200) + "..." }}
         </div>
       </div>
     </div>
 
-    <div class="h-full md:w-52">
+    <div class="md:w-52">
       <img
-        class="md:w-full md:h-44 lg:w-72 lg:h-52 rounded-xl object-cover"
-        src="https://t3.ftcdn.net/jpg/04/49/19/08/360_F_449190831_i2whvIQdDIGtuIVWT6QfenWwmRApVJ5l.jpg"
+        class="md:w-full h-56 w-full md:h-44 lg:w-72 lg:h-52 rounded-xl object-cover"
+        [src]="'data:image/png;base64, ' + data.ImageContent"
         alt=""
       />
     </div>
   </div>
 </div>
+@if(isAuthorized) {
+
+<div class="w-full flex justify-end my-2">
+  <button-shared (click)="handleDelete(data.ID)" [danger]="true"
+    >Удалить</button-shared
+  >
+</div>
+}
