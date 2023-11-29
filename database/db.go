@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-func DBInit() *mongo.Client {
+func DBInit(errorLogger *log.Logger, infoLogger *log.Logger) *mongo.Client {
 	password := os.Getenv("DB_PASS")
 	uri := fmt.Sprintf("mongodb+srv://tamer:%s@tamer.ci0zyf2.mongodb.net/?retryWrites=true&w=majority", password)
 
@@ -19,14 +19,14 @@ func DBInit() *mongo.Client {
 
 	client, err := mongo.Connect(context.Background(), opts)
 	if err != nil {
-		log.Printf("Database connection error: %v\n", err)
+		errorLogger.Fatalf("Database connection error: %v\n", err)
 	}
 
 	if err := client.Database("admin").RunCommand(context.Background(), bson.D{{"ping", 1}}).Err(); err != nil {
-		log.Printf("Ping to database error: %v\n", err)
+		errorLogger.Fatalf("Ping to database error: %v\n", err)
 	}
 
-	log.Printf("Connection is succeed!")
+	infoLogger.Printf("Connection is succeed!")
 
 	return client
 }

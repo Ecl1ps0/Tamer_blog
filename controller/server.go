@@ -9,7 +9,7 @@ import (
 	"log"
 )
 
-func StartServer(db *model.DBCollection) {
+func StartServer(db *model.DBCollection, errorLogger *log.Logger) {
 	router := gin.New()
 
 	gin.SetMode(gin.ReleaseMode)
@@ -25,7 +25,7 @@ func StartServer(db *model.DBCollection) {
 
 	err := router.SetTrustedProxies([]string{"127.0.0.1"})
 	if err != nil {
-		log.Printf("Set trusted proxies error: %v\n", err)
+		errorLogger.Fatalf("Set trusted proxies error: %v\n", err)
 	}
 
 	router.Use(config.SetCollectionContext(db))
@@ -38,6 +38,6 @@ func StartServer(db *model.DBCollection) {
 	router.POST("/authorize", routes.CheckIsAdmin)
 
 	if err := router.Run(":8080"); err != nil {
-		log.Printf("Start server error: %v\n", err)
+		errorLogger.Fatalf("Start server error: %v\n", err)
 	}
 }

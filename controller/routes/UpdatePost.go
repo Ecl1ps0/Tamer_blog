@@ -12,29 +12,29 @@ import (
 )
 
 func UpdatePost(c *gin.Context) {
+	logger := log.New(c.Writer, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
+
 	isAdmin, err := c.Request.Cookie("isAdmin")
 	if err != nil || isAdmin.Value != "true" {
 		c.JSON(http.StatusForbidden, "Only admin is able to interact with posts!")
-		return
+		logger.Fatalf("Rights error: %v\n", err)
 	}
 
 	collectionInterface, exists := c.Get("collection")
 	if !exists {
-		log.Print("The context of collection is empty!")
-		return
+		logger.Fatal("The context of collection is empty!")
 	}
 
 	collection, ok := collectionInterface.(*model.DBCollection)
 	if !ok {
-		log.Print("Failed to assert the type to *model.DBCollection!")
-		return
+		logger.Fatal("Failed to assert the type to *model.DBCollection!")
 	}
 
 	idParam := c.Param("id")
 
 	if err := c.Request.ParseMultipartForm(10 << 20); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse the form!"})
-		return
+		logger.Fatalf("Failed to parse the form: %v\n", err)
 	}
 
 	title := c.Request.PostFormValue("title")
@@ -49,7 +49,7 @@ func UpdatePost(c *gin.Context) {
 
 	imageBytes, err := config.ConvertImgToBytes(image)
 	if err != nil {
-		log.Printf("Image converting error: %v\n", err)
+		logger.Fatalf("Image converting error: %v\n", err)
 	}
 
 	base64Img := base64.StdEncoding.EncodeToString(imageBytes)
@@ -64,8 +64,7 @@ func UpdatePost(c *gin.Context) {
 
 	_, updateErr := services.UpdateArticle(idParam, updatedArticle, collection)
 	if updateErr != nil {
-		log.Printf("Update error: %v\n", err)
-		return
+		logger.Fatalf("Update error: %v\n", err)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Post successfully updated!"})

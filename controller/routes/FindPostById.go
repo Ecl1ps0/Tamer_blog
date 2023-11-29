@@ -9,23 +9,23 @@ import (
 )
 
 func FindPostBYId(c *gin.Context) {
+	logger := log.New(c.Writer, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
+
 	collectionInterface, exists := c.Get("collection")
 	if !exists {
-		log.Print("The context of collection is empty!")
-		return
+		logger.Fatal("The context of collection is empty!")
 	}
 
 	collection, ok := collectionInterface.(*model.DBCollection)
 	if !ok {
-		log.Print("Failed to assert the type to *model.DBCollection!")
-		return
+		logger.Fatal("Failed to assert the type to *model.DBCollection!")
 	}
 
 	idParam := c.Param("id")
 
 	post, err := services.FindBYId(idParam, collection)
 	if err != nil {
-		log.Printf("Failed to find the post by id: %v\n", err)
+		logger.Fatalf("Failed to find the post by id: %v\n", err)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"post": post})
