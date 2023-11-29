@@ -19,11 +19,13 @@ func DeletePost(c *gin.Context) {
 
 	collectionInterface, exists := c.Get("collection")
 	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get collection from the context!"})
 		logger.Fatal("The context of collection is empty!")
 	}
 
 	collection, ok := collectionInterface.(*model.DBCollection)
 	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse collection after getting the context!"})
 		logger.Fatal("Failed to assert the type to *model.DBCollection!")
 	}
 
