@@ -22,11 +22,13 @@ func UpdatePost(c *gin.Context) {
 
 	collectionInterface, exists := c.Get("collection")
 	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse collection after getting the context!"})
 		logger.Fatal("The context of collection is empty!")
 	}
 
 	collection, ok := collectionInterface.(*model.DBCollection)
 	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get collection from the context!"})
 		logger.Fatal("Failed to assert the type to *model.DBCollection!")
 	}
 
@@ -42,13 +44,14 @@ func UpdatePost(c *gin.Context) {
 
 	image, _, err := c.Request.FormFile("imageContent")
 	if err != nil {
-		log.Print("Fail to load image!")
-		return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Fail to load image!"})
+		logger.Fatal("Fail to load image!")
 	}
 	defer image.Close()
 
 	imageBytes, err := config.ConvertImgToBytes(image)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to convert image to bytes!"})
 		logger.Fatalf("Image converting error: %v\n", err)
 	}
 
@@ -64,6 +67,7 @@ func UpdatePost(c *gin.Context) {
 
 	_, updateErr := services.UpdateArticle(idParam, updatedArticle, collection)
 	if updateErr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update the post in database!"})
 		logger.Fatalf("Update error: %v\n", err)
 	}
 
