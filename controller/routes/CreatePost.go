@@ -56,7 +56,7 @@ func CreatePost(c *gin.Context) {
 
 	base64Img := base64.StdEncoding.EncodeToString(imageBytes)
 
-	article := model.Article{
+	article := &model.Article{
 		ID:           primitive.NewObjectID(),
 		Title:        title,
 		TextContent:  textContent,
